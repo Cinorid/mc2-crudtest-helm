@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mc2-crudtest.fullname" . }}-web
+  labels:
+    app: {{ include "mc2-crudtest.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "mc2-crudtest.name" . }}
+      component: web
+  template:
+    metadata:
+      labels:
+        app: {{ include "mc2-crudtest.name" . }}
+        component: web
+    spec:
+      containers:
+        - name: web
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_ENVIRONMENT
+              value: "Production"
+            - name: ConnectionStrings__DefaultConnection
+              value: "Server={{ include "mc2-crudtest.fullname" . }}-sql;Database=CrudTestDb;User Id=sa;Password={{ .Values.sql.saPassword }};"

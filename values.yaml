@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/cinorid/mc2-crud-test
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+
+sql:
+  image: mcr.microsoft.com/mssql/server:2019-latest
+  saPassword: "Your_password123"
+
+ingress:
+  enabled: true
+  host: "blazor.cinorid.ir"

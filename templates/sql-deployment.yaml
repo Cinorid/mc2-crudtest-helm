@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mc2-crudtest.fullname" . }}-sql
+  labels:
+    app: {{ include "mc2-crudtest.name" . }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "mc2-crudtest.name" . }}
+      component: sql
+  template:
+    metadata:
+      labels:
+        app: {{ include "mc2-crudtest.name" . }}
+        component: sql
+    spec:
+      containers:
+        - name: sql
+          image: "{{ .Values.sql.image }}"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "mc2-crudtest.fullname" . }}-sql
+                  key: saPassword
+          ports:
+            - containerPort: 1433
