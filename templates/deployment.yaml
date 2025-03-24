@@ -26,4 +26,4 @@ spec:
             - name: ASPNETCORE_ENVIRONMENT
               value: "Production"
             - name: ConnectionStrings__DefaultConnection
-              value: "Server={{ include "mc2-crudtest.fullname" . }}-sql;Database=CrudTestDb;User Id=sa;Password={{ .Values.sql.saPassword }};"
+              value: "Server={{ include "mc2-crudtest.fullname" . }}-sql;Database=CrudTestDb;User Id=sa;Password={{ .Values.sql.saPassword }};MultipleActiveResultSets=true;TrustServerCertificate=True;"
